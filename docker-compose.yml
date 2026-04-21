@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: laundry_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password_123
+      MYSQL_DATABASE: express_laundry
+      MYSQL_USER: laundrynow
+      MYSQL_PASSWORD: laundrynow_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - laundry_network
+
+  # Express App
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laundry_app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Database Configuration
+      DB_HOST: db
+      DB_USER: laundrynow
+      DB_PASSWORD: laundrynow_pass
+      DB_NAME: express_laundry
+      DB_PORT: 3306
+      
+      # Application Configuration
+      PORT: 4000
+      NODE_ENV: production
+      JWT_SECRET: laundrysecret2026
+      
+      # Email Configuration (Nodemailer)
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_SECURE: false
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SMTP_FROM: "Express Laundry" <noreply@laundrynow.com>
+      
+      # Cloudflare R2 Configuration
+      CLOUDFLARE_R2_ENDPOINT: ${CLOUDFLARE_R2_ENDPOINT}
+      CLOUDFLARE_R2_ACCESS_KEY_ID: ${CLOUDFLARE_R2_ACCESS_KEY_ID}
+      CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${CLOUDFLARE_R2_SECRET_ACCESS_KEY}
+      CLOUDFLARE_R2_BUCKET_NAME: ${CLOUDFLARE_R2_BUCKET_NAME}
+      CLOUDFLARE_R2_PUBLIC_URL: ${CLOUDFLARE_R2_PUBLIC_URL}
+      
+      # Basic Auth Credentials
+      BASIC_AUTH_EMAIL: ${BASIC_AUTH_EMAIL}
+      BASIC_AUTH_PASSWORD: ${BASIC_AUTH_PASSWORD}
+    
+    ports:
+      - "4000:4000"
+    
+    volumes:
+      - ./src:/app/src
+      - ./uploads:/app/uploads
+    
+    networks:
+      - laundry_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  laundry_network:
+    driver: bridge
