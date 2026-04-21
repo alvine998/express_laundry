@@ -1,0 +1,771 @@
+{
+  "info": {
+    "name": "Express Laundry API",
+    "description": "API collection for the Laundry Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "YOUR_JWT_TOKEN",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"1234567890\",\n  \"password\": \"password123\",\n  \"role\": \"customer\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Send OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/auth/otp/send",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "otp", "send"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"1234567890\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/auth/otp/verify",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "otp", "verify"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"1234567890\",\n  \"otp\": \"123456\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shops",
+      "item": [
+        {
+          "name": "Get Nearby Shops",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/shops/nearby?lat=-6.2&lon=106.8",
+              "host": ["{{base_url}}"],
+              "path": ["api", "shops", "nearby"],
+              "query": [
+                { "key": "lat", "value": "-6.2" },
+                { "key": "lon", "value": "106.8" },
+                { "key": "limit", "value": "10" },
+                { "key": "page", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Shop Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/shops/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "shops", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/customer/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customer", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Get Addresses",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/customer/addresses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customer", "addresses"]
+            }
+          }
+        },
+        {
+          "name": "Add Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/customer/addresses",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customer", "addresses"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Home\",\n  \"name\": \"John Doe\",\n  \"phone\": \"1234567890\",\n  \"full_address\": \"123 Main St\",\n  \"latitude\": -6.2,\n  \"longitude\": 106.8,\n  \"is_default\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Address",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/customer/addresses/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customer", "addresses", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_default\": false\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/customer/orders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customer", "orders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shop_id\": 1,\n  \"service_info\": {\"service_id\": 1, \"package_id\": 1, \"qty\": 2},\n  \"total_amount\": 50000,\n  \"payment_method\": \"BALANCE\",\n  \"notes\": \"Extra clean\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get Order History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/customer/orders/history?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "customer", "orders", "history"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Partner",
+      "item": [
+        {
+          "name": "Update Shop Settings",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/partner/shop/settings",
+              "host": ["{{base_url}}"],
+              "path": ["api", "partner", "shop", "settings"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_open\": true,\n  \"opening_hours\": \"08:00 - 20:00\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get Pending Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/partner/orders/pending?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "partner", "orders", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/partner/orders/1/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "partner", "orders", "1", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PROCESSING\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Order Weight",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/partner/orders/1/weight",
+              "host": ["{{base_url}}"],
+              "path": ["api", "partner", "orders", "1", "weight"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"weight\": 2.5\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Get Wallet Balance",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/partner/wallet/balance",
+              "host": ["{{base_url}}"],
+              "path": ["api", "partner", "wallet", "balance"]
+            }
+          }
+        },
+        {
+          "name": "Withdraw Funds",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/partner/wallet/withdraw",
+              "host": ["{{base_url}}"],
+              "path": ["api", "partner", "wallet", "withdraw"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 10000,\n  \"bank_name\": \"BCA\",\n  \"account_number\": \"1234567890\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/users?page=1&limit=10&role=customer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "role", "value": "customer" },
+                { "key": "is_online", "value": "true", "disabled": true },
+                { "key": "search", "value": "john", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Updated\",\n  \"phone\": \"0987654321\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/dashboard/admin",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dashboard", "admin"]
+            }
+          }
+        },
+        {
+          "name": "Partner Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/dashboard/partner",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dashboard", "partner"]
+            }
+          }
+        },
+        {
+          "name": "Customer Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/dashboard/customer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "dashboard", "customer"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Uploads",
+      "item": [
+        {
+          "name": "Upload Shop Photo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/upload/shop",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "shop"]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "shop_photo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Profile Photo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/upload/profile",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "profile"]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "profile_photo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Service Photo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/upload/service?serviceId=1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "service"],
+              "query": [
+                {
+                  "key": "serviceId",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "service_photo",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload Multiple Files",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/upload/multiple?folder=general",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "multiple"],
+              "query": [
+                {
+                  "key": "folder",
+                  "value": "general"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete File",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/upload/shops%2Fshop-123-1708937843.jpg",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "shops%2Fshop-123-1708937843.jpg"]
+            }
+          }
+        },
+        {
+          "name": "Upload Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/upload/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kiloan\",\n  \"icon\": \"washing-machine\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kiloan Updated\",\n  \"icon\": \"washing-machine-new\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Get Services",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/services?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "services"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "shop_id", "value": "1", "disabled": true },
+                { "key": "category_id", "value": "1", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Service By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/services/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "services", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/services",
+              "host": ["{{base_url}}"],
+              "path": ["api", "services"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cuci Kering\",\n  \"category_id\": 1,\n  \"icon\": \"shirt\",\n  \"color\": \"#4A90E2\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Update Service",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/services/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "services", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cuci Kering Updated\",\n  \"color\": \"#FF5733\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Delete Service",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/services/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "services", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Courier",
+      "description": "Endpoints for couriers. Requires Bearer token with role=courier.\n\n--- Socket.io Events (courier side) ---\nEMIT   | accept_order        | { token, orderId }\nLISTEN | order_accept_result | { orderId, success, reason? }\nLISTEN | new_order_offer     | { orderId, shopName, shopAddress, location: {lat,lon}, timeoutSeconds }\n\n--- Socket.io Events (customer side) ---\nLISTEN | courier_searching   | { orderId }\nLISTEN | courier_assigned    | { orderId, courier: {id, name, phone} }\nLISTEN | courier_not_found   | { orderId, reason? }\nLISTEN | status_changed      | { orderId, newStatus }",
+      "item": [
+        {
+          "name": "Get Courier Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/api/courier/orders?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "courier", "orders"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "status", "value": "PICKING_UP", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Courier Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/courier/orders/ORD-1234567890-123/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "courier", "orders", "ORD-1234567890-123", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PICKING_UP\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Allowed statuses: PICKING_UP, DELIVERING, COMPLETED"
+          }
+        }
+      ]
+    }
+  ]
+}
